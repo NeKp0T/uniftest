@@ -3,20 +3,17 @@ dudewicz.unif.test <- function(x, nrepl=2000, m=length(x) %/% 2)
     DNAME <- deparse(substitute(x))
     l <- 0
     n <- length(x)
-    x <- sort(x)
-    a <- x[1]
-    b <- x[n]
 	statistic <- function(arr) {
-		for (i in 1:m) arr <- c(a, arr, b)
+		arr <- sort(arr)
+		a <- arr[1]
+		b <- arr[n]
+		arr <- append(rep(a, m), append(arr, rep(b, m)))
     	return(-mean(log(n / 2 / m * (arr[c(1:n) + 2 * m] - arr[c(1:n)]), 2)))
 	}
     h <- statistic(x)
 	for (i in 1:nrepl)
     {
         z <- runif(n)
-        z <- sort(z)
-        a <- z[1]
-        b <- z[n]
         H <- statistic(z)
         if (H > h) l = l + 1
     }
