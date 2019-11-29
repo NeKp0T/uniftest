@@ -10,7 +10,10 @@ sherman.unif.test <- function(x, nrepl=2000)
         z <- runif(n)
         z <- c(0, sort(z), 1)
         W <- sum(abs(z[c(2 : (n + 2))] - z[c(1 : (n + 1))] - 1 / (n + 1))) / 2
-        if (W > w)l = l + 1
+        if (W > w)
+        {
+            l <- l + 1
+        }
     }
     p.value <- l / nrepl
     RVAL <- list(statistic = c(W = w), p.value = p.value, method = "Sherman test for uniformity", data.name = DNAME)
