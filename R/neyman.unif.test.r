@@ -1,31 +1,34 @@
-neyman.unif.test<-function(x, nrepl=2000,k=5)
+GetNeyman <- function(polynomials, x, n, k)
 {
-DNAME <- deparse(substitute(x))
-l<-0
-n<-length(x)
-x<-sort(x)
-po<-legendre.polynomials(k,normalized=TRUE)
-ne<-0
-for(i in 1:k)
-{
-	v<-(sum(sqrt(2)*polynomial.values(po[i+1],2*x-1)[[1]])/sqrt(n))^2
-	ne<-ne+v
+	sum <- 0
+	for (i in 1 : k) 
+	{
+		sum <- sum + (sum(sqrt(2) * polynomial.values(polynomials[i + 1], 2 * x - 1)[[1]]) / sqrt(n)) ^ 2
+	}
+	return(sum)
 }
 
-for(i in 1:nrepl)
+neyman.unif.test <- function(x, nrepl=2000,k=5)
 {
-	z<-runif(n)
-	z<-sort(z)
-	Ne<-0
-	for(j in 1:k)
+	DNAME <- deparse(substitute(x))
+	n <- length(x)
+	x <- sort(x)
+	polynomials <- legendre.polynomials(k,normalized=TRUE)
+	initNeyman <- GetNeyman(polynomials, x, n, k)
+	
+	sum <- 0
+	for (i in 1 : nrepl)
 	{
-		V<-(sum(sqrt(2)*polynomial.values(po[j+1],2*z-1)[[1]])/sqrt(n))^2
-		Ne<-Ne+V
+		z <- runif(n)
+		z <- sort(z)
+		currentNeyman <- GetNeyman(polynomials, z, n, k)
+		if (currentNeyman > initNeyman)
+		{
+			sum <- sum + 1
+		}
 	}
-	if (Ne>ne) l=l+1
-}
-p.value<-l/nrepl
-RVAL<-list(statistic=c(N=ne), p.value=p.value, method="Neyman test for uniformity",data.name = DNAME)
-class(RVAL)<-"htest"
-return(RVAL)
+	p.value <- l/nrepl
+	RVAL <- list(statistic=c(N=initNeyman), p.value=p.value, method="Neyman test for uniformity", data.name=DNAME)
+	class(RVAL) <- "htest"
+	return(RVAL)
 }
