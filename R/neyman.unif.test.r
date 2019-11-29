@@ -27,7 +27,7 @@ neyman.unif.test <- function(x, nrepl = 2000, k = 5)
             sum <- sum + 1
         }
     }
-    p.value <- l / nrepl
+    p.value <- sum / nrepl
     RVAL <- list(statistic = c(N = initNeyman), p.value = p.value, method = "Neyman test for uniformity", data.name = DNAME)
     class(RVAL) <- "htest"
     return(RVAL)
