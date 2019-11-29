@@ -1,6 +1,6 @@
 GetStatistic <- function(x, n)
 {
-    return (sum((x[c(2 : (n + 2))] - x[c(1 : (n + 1))]) ^ 2) +
+    return(sum((x[c(2 : (n + 2))] - x[c(1 : (n + 1))]) ^ 2) +
         sum((x[c(2 : (n + 1))] - x[c(1 : n)]) * (x[c(3 : (n + 2))] - x[c(2 : (n + 1))])))
 }
 
