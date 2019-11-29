@@ -1,19 +1,27 @@
 frosini.unif.test <- function(x, nrepl=2000)
-{
-    DNAME <- deparse(substitute(x))
-    l <- 0
-    n <- length(x)
-    x <- sort(x)
-    b <- 1 / sqrt(n) * sum(abs(x - (c(1 : n) - 0.5) / n))
-    for (i in 1 : nrepl)
-    {
-        z <- runif(n)
-        z <- sort(z)
-        B <- 1 / sqrt(n) * sum(abs(z - (c(1 : n) - 0.5) / n))
-        if (B > b)l = l + 1
+{   
+    statistic <- function(x) {
+        n <- length(x)
+        return(1 / sqrt(n) * sum(abs(sort(x) - (c(1 : n) - 0.5) / n)))
     }
-    p.value <- l / nrepl
-    RVAL <- list(statistic = c(B = b), p.value = p.value, method = "Frosini test for uniformity", data.name = DNAME)
+    
+    b <- statistic(x)
+    data.name <- deparse(substitute(x))
+    x.length = length(x) 
+    
+    monte_carlo <- function(statistic.value, statistic.function, point.number, nrepl=nrepl) {
+        successes = 0
+        for (i in 1 : nrepl) {
+            if (statistic.function(runif(point.number)) > statistic.value) {
+                successes <- successes + 1
+            }
+        }
+        
+        return(successes / nrepl) 
+    }
+    
+    p.value <- monte_carlo(b, statistic, x.length, nrepl)
+    RVAL <- list(statistic = c(B = b), p.value = p.value, method = "Frosini test for uniformity", data.name = data.name)
     class(RVAL) <- "htest"
     return(RVAL)
 }
