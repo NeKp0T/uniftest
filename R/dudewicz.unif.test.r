@@ -1,4 +1,4 @@
-dudewicz.unif.test <- function(x, nrepl=2000, m=length(x) / 2)
+dudewicz.unif.test <- function(x, nrepl=2000, m=length(x) %/% 2)
 {
     DNAME <- deparse(substitute(x))
     l <- 0
@@ -8,7 +8,7 @@ dudewicz.unif.test <- function(x, nrepl=2000, m=length(x) / 2)
     b <- x[n]
     for (i in 1:m) x <- c(a, x, b)
     h <- -1 / n * sum(log(n / 2 / m * (x[c(1:n) + 2 * m] - x[c(1:n)]), 2))
-    for (i in 1:nrepl)
+	for (i in 1:nrepl)
     {
         z <- runif(n)
         z <- sort(z)
