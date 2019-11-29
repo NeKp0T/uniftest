@@ -21,7 +21,8 @@ frosini.unif.test <- function(x, nrepl=2000)
     }
     
     p.value <- monte_carlo(b, statistic, x.length, nrepl)
-    RVAL <- list(statistic = c(B = b), p.value = p.value, method = "Frosini test for uniformity", data.name = data.name)
+    RVAL <- list(statistic = c(B = b), p.value = p.value, 
+                 method = "Frosini test for uniformity", data.name = data.name)
     class(RVAL) <- "htest"
     return(RVAL)
 }
